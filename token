@@ -20,7 +20,9 @@ https://api.meteo-concept.com/api/forecast/daily?token=74a10e07323356e9173cce49f
     <button onclick="rechercherVilles()">Rechercher</button>
 
     <select id="menuVilles" onchange="afficherMeteo()">
-        <!-- Le menu déroulant sera rempli par JavaScript -->
+        <!-- La première option sera le message par défaut -->
+        <option value="" disabled selected>Votre ville</option>
+        <!-- Les autres options seront les villes récupérées -->
     </select>
 
     <h2>Météo :</h2>
@@ -38,13 +40,29 @@ https://api.meteo-concept.com/api/forecast/daily?token=74a10e07323356e9173cce49f
                 .then(data => {
                     var menuVilles = document.getElementById("menuVilles");
                     menuVilles.innerHTML = ""; // Efface les options précédentes
+                    document.getElementById("meteo").innerHTML = ""; // Efface les données météo précédentes
                     
-                    data.forEach(ville => {
-                        var option = document.createElement("option");
-                        option.value = ville.code; // Utiliser le code de la ville comme valeur
-                        option.textContent = ville.nom; // Nom de la ville affiché à l'utilisateur
-                        menuVilles.appendChild(option);
-                    });
+                    // Ajouter l'option par défaut "Votre ville"
+                    var optionDefault = document.createElement("option");
+                    optionDefault.value = ""; // Valeur vide
+                    optionDefault.textContent = "Votre ville";
+                    menuVilles.appendChild(optionDefault);
+
+                    if (data.length === 0) {
+                        // Ajouter une option pour afficher un message d'erreur si aucune ville n'est trouvée
+                        var optionErreur = document.createElement("option");
+                        optionErreur.disabled = true;
+                        optionErreur.textContent = "Aucune ville trouvée pour ce code postal";
+                        menuVilles.appendChild(optionErreur);
+                    } else {
+                        // Ajouter les options pour chaque ville trouvée
+                        data.forEach(ville => {
+                            var option = document.createElement("option");
+                            option.value = ville.code; // Utiliser le code de la ville comme valeur
+                            option.textContent = ville.nom; // Nom de la ville affiché à l'utilisateur
+                            menuVilles.appendChild(option);
+                        });
+                    }
                 })
                 .catch(error => {
                     console.error("Une erreur s'est produite lors de la récupération des données :", error);
@@ -53,6 +71,13 @@ https://api.meteo-concept.com/api/forecast/daily?token=74a10e07323356e9173cce49f
 
         function afficherMeteo() {
             var codeVille = document.getElementById("menuVilles").value;
+
+            // Vérifier si l'utilisateur a sélectionné une ville valide
+            if (codeVille === "") {
+                // Ne rien faire si "Votre ville" est sélectionné
+                return;
+            }
+
             var url = "https://api.meteo-concept.com/api/forecast/daily?token=74a10e07323356e9173cce49fea51b1872b9bd15c9da24311aa30fb7b501543c&insee=" + codeVille;
 
             fetch(url)
@@ -61,21 +86,10 @@ https://api.meteo-concept.com/api/forecast/daily?token=74a10e07323356e9173cce49f
                     var meteo = document.getElementById("meteo");
                     meteo.innerHTML = ""; // Efface les données météo précédentes
                     
-                    var forecast = data.forecast;
+                    var item = data.forecast[0]; // Obtenir les informations pour le premier jour seulement
+
                     var li = document.createElement("li");
-                    li.textContent = "Température minimale : " + forecast.tmin + " °C";
-                    meteo.appendChild(li);
-
-                    li = document.createElement("li");
-                    li.textContent = "Température maximale : " + forecast.tmax + " °C";
-                    meteo.appendChild(li);
-
-                    li = document.createElement("li");
-                    li.textContent = "Probabilité de pluie : " + forecast.probarain + "%";
-                    meteo.appendChild(li);
-
-                    li = document.createElement("li");
-                    li.textContent = "Heures d'ensoleillement : " + forecast.sunHours + " heures";
+                    li.textContent = "Température minimale : " + item.tmin + " °C, Température maximale : " + item.tmax + " °C, Probabilité de pluie : " + item.probarain + "%, Heures d'ensoleillement : " + item.sun_hours + " heures";
                     meteo.appendChild(li);
                 })
                 .catch(error => {
