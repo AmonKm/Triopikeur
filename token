@@ -2,3 +2,86 @@
 
 https://geo.api.gouv.fr/communes?codePostal=
 https://api.meteo-concept.com/api/forecast/daily?token=74a10e07323356e9173cce49fea51b1872b9bd15c9da24311aa30fb7b501543c&insee=14118
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recherche de villes par code postal</title>
+</head>
+<body>
+    <h1>Recherche de villes par code postal</h1>
+    <label for="codePostal">Entrez un code postal :</label>
+    <input type="text" id="codePostal">
+    <button onclick="rechercherVilles()">Rechercher</button>
+
+    <select id="menuVilles" onchange="afficherMeteo()">
+        <!-- Le menu déroulant sera rempli par JavaScript -->
+    </select>
+
+    <h2>Météo :</h2>
+    <ul id="meteo">
+        <!-- Les données météo seront affichées ici -->
+    </ul>
+
+    <script>
+        function rechercherVilles() {
+            var codePostal = document.getElementById("codePostal").value;
+            var url = "https://geo.api.gouv.fr/communes?codePostal=" + codePostal;
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    var menuVilles = document.getElementById("menuVilles");
+                    menuVilles.innerHTML = ""; // Efface les options précédentes
+                    
+                    data.forEach(ville => {
+                        var option = document.createElement("option");
+                        option.value = ville.code; // Utiliser le code de la ville comme valeur
+                        option.textContent = ville.nom; // Nom de la ville affiché à l'utilisateur
+                        menuVilles.appendChild(option);
+                    });
+                })
+                .catch(error => {
+                    console.error("Une erreur s'est produite lors de la récupération des données :", error);
+                });
+        }
+
+        function afficherMeteo() {
+            var codeVille = document.getElementById("menuVilles").value;
+            var url = "https://api.meteo-concept.com/api/forecast/daily?token=74a10e07323356e9173cce49fea51b1872b9bd15c9da24311aa30fb7b501543c&insee=" + codeVille;
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    var meteo = document.getElementById("meteo");
+                    meteo.innerHTML = ""; // Efface les données météo précédentes
+                    
+                    var forecast = data.forecast;
+                    var li = document.createElement("li");
+                    li.textContent = "Température minimale : " + forecast.tmin + " °C";
+                    meteo.appendChild(li);
+
+                    li = document.createElement("li");
+                    li.textContent = "Température maximale : " + forecast.tmax + " °C";
+                    meteo.appendChild(li);
+
+                    li = document.createElement("li");
+                    li.textContent = "Probabilité de pluie : " + forecast.probarain + "%";
+                    meteo.appendChild(li);
+
+                    li = document.createElement("li");
+                    li.textContent = "Heures d'ensoleillement : " + forecast.sunHours + " heures";
+                    meteo.appendChild(li);
+                })
+                .catch(error => {
+                    console.error("Une erreur s'est produite lors de la récupération des données météo :", error);
+                });
+        }
+    </script>
+</body>
+</html>
