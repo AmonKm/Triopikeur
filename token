@@ -1,1 +1,4 @@
 74a10e07323356e9173cce49fea51b1872b9bd15c9da24311aa30fb7b501543c
+
+https://geo.api.gouv.fr/communes?codePostal=
+https://api.meteo-concept.com/api/forecast/daily?token=74a10e07323356e9173cce49fea51b1872b9bd15c9da24311aa30fb7b501543c&insee=14118
