@@ -1,5 +1,4 @@
 # Groupe Triopikeur
-- Maubert Kylian
-- Pinel Axel
-- Laurent Théo
-```TD2```
+- Maubert Kylian ```TD2```
+- Pinel Axel ```TD2```
+- Laurent Théo ```TD2```
