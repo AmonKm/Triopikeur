@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recherche de villes par code postal</title>
+    <link rel="stylesheet" href="style1.css"
+</head>
+
+<body>
+    <div id="bg">
+        <canvas></canvas>
+        <canvas></canvas>
+        <canvas></canvas>
+    </div>
+        <h1>Recherche de villes par <span>code postal</span></h1>
+    <main>
+        <label for="codePostal">Entrez un code postal :</label>
+        <input type="text" id="codePostal">
+        <button onclick="rechercherVilles()">Rechercher</button>
+
+        <select id="menuVilles" onchange="afficherMeteo()">
+            <!-- La première option sera le message par défaut -->
+            <option value="" disabled selected>Votre ville</option>
+            <!-- Les autres options seront les villes récupérées -->
+        </select>
+
+        <br>
+        <h2>Météo :</h2>
+        <br>
+        <ul id="meteo">
+            <!-- Les données météo seront affichées ici -->
+        </ul>
+    </main>
+    <script src='//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script><script  src="script.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,74 @@
+
+
+/* BACKGROUND */
+
+#bg {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: -1;
+}
+
+#bg canvas {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+  }
+
+:root {
+    --texte: #dadada;
+    --secondary: #0076d6;
+    --texte2: #aaaaaa;
+    --background: #ececec;
+}
+
+
+header {
+	border-bottom: 1px solid var(--texte);
+	padding: 1.5em 0;
+	text-align: center;
+  }
+
+
+h1 {
+	font-family: 'Yeseva One', cursive;
+	font-size: 2em;
+    margin-bottom: 2em;
+    width: 90%;
+	padding-top: 3em;
+    padding: 10px;
+    border-radius: 20px;
+    background-color: var(--background);
+    text-align: center;
+    margin-left: 5%;
+}
+
+h1 span {
+    color: var(--secondary);
+}
+
+main {
+    width: 60%;
+    height: 60%;
+	margin: auto;
+	padding-top: 3em;
+    text-align: center;
+    padding: 10px;
+    border-radius: 20px;
+    background-color: var(--background);
+}
+
+main h2 {
+    margin-top: 3%;
+}
